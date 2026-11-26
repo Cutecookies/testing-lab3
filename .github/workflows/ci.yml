@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  #  Запуск линтера и unit-тестов 
+  #  Запуск unit-тестов 
   unit-tests:
     runs-on: ubuntu-latest
     steps:
@@ -22,14 +22,19 @@ jobs:
         pip install flake8 pytest pytest-cov
     - name: Lint with flake8
       run: |
-        # Останавливаем сборку, если есть синтаксические ошибки
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        echo "This is a fake error to test Quality Gates"
+        exit 1
     - name: Run Unit Tests with Coverage
       run: |
-        # Запускаем тесты с проверкой покрытия (имитация для лабы)
-        # В реальном проекте тут были бы тесты бэкенда
-        echo "Unit tests passed!"
-        echo "Coverage: 85%"
+        coverage_percent=75 
+        
+        echo "Current coverage: ${coverage_percent}%"
+        if [ $coverage_percent -lt 80 ]; then
+          echo "Error: Coverage is below 80%! Pipeline failed."
+          exit 1 # Эта команда роняет пайплайн
+        fi
+        echo "Coverage is sufficient."
 
   # Проверка безопасности (Quality Gate)
   security-scan:
@@ -74,3 +79,9 @@ jobs:
         echo "Starting servers..."
         echo "Running E2E tests..."
         echo "E2E tests passed!"
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always() 
+      with:
+        name: playwright-results
+        path: tests/
