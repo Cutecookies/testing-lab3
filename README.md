@@ -1,3 +1,16 @@
+# Edgistify Testing Project
+
+![CI/CD Pipeline](https://github.com/Cutecookies/testing-lab3/actions/workflows/ci.yml/badge.svg)
+
+## Описание
+Учебный проект по автоматизации UI-тестирования с использованием Playwright и настройки CI/CD пайплайна на GitHub Actions.
+
+## Технологии
+- Python + Playwright (E2E тесты)
+- Pytest (запуск тестов и Coverage)
+- GitHub Actions (CI/CD)
+
+
 # E-Commerce Platform
 
 ## Overview
